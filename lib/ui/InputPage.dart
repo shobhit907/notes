@@ -63,7 +63,7 @@ class _InputPageState extends State<InputPage> {
             "color": null,
           });
         },
-        tooltip: "Save Note",
+        tooltip: "Cancel",
       );
     }));
   }

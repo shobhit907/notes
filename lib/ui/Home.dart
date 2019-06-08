@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/models/Note.dart';
 import 'package:notes/utils/database_helper.dart';
-
+import 'ListViewPage.dart';
 import 'InputPage.dart';
 import 'StaggeredGridPage.dart';
 
@@ -14,6 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  dynamic toggle=new StaggeredGridPage();
+  String curr="s";
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -27,16 +29,22 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
         backgroundColor: Colors.blue.shade200,
+        actions: <Widget>[
+          new IconButton(tooltip: "Toggle View",icon: Icon(Icons.shuffle,color: Colors.white,), onPressed: (){
+            _handleToggle();
+          })
+        ],
       ),
       drawer: new Drawer(
-        
+
       ),
-      body: new Scrollbar(child: new StaggeredGridPage()),
+      body: new Scrollbar(child: toggle),
       floatingActionButton: new FloatingActionButton(
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         backgroundColor: Colors.blue.shade200,
         child: (Builder(builder: (BuildContext context) {
           return new IconButton(
+            tooltip: "Add Note",
             icon: Icon(Icons.add),
             onPressed: () {
               saveNote(context);
@@ -62,8 +70,28 @@ class _HomeState extends State<Home> {
         new DateTime.now(),
         result["color"] == null ? Colors.red.value.toString() : result["color"],
       ));
-      var snackbar = new SnackBar(content: new Text("Saved"));
+      var snackbar = new SnackBar(content: new Text("Saved"),duration: new Duration(seconds: 1),);
       Scaffold.of(context).showSnackBar(snackbar);
     }
+    else
+      {
+        var snackbar = new SnackBar(content: new Text("Not Saved"),duration: new Duration(seconds: 1),);
+        Scaffold.of(context).showSnackBar(snackbar);
+      }
+  }
+
+  void _handleToggle() {
+    setState(() {
+      if(curr=="s")
+        {
+          curr="l";
+          toggle=new ListViewPage();
+        }
+      else
+        {
+          curr="s";
+          toggle=new StaggeredGridPage();
+        }
+    });
   }
 }
