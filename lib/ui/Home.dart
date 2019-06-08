@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notes/models/Note.dart';
 import 'package:notes/utils/database_helper.dart';
-import 'ListViewPage.dart';
+
+import 'AboutPage.dart';
 import 'InputPage.dart';
+import 'ListViewPage.dart';
 import 'StaggeredGridPage.dart';
 
 class Home extends StatefulWidget {
@@ -14,8 +16,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  dynamic toggle=new StaggeredGridPage();
-  String curr="s";
+  dynamic toggle = new StaggeredGridPage();
+  String curr = "s";
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,13 +33,45 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Colors.blue.shade200,
         actions: <Widget>[
-          new IconButton(tooltip: "Toggle View",icon: Icon(Icons.shuffle,color: Colors.white,), onPressed: (){
-            _handleToggle();
-          })
+          new IconButton(
+              tooltip: "Toggle View",
+              icon: Icon(
+                Icons.shuffle,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _handleToggle();
+              })
         ],
       ),
       drawer: new Drawer(
-
+        child: Container(
+          color: Colors.blue.shade100,
+          child: new ListView(
+            children: <Widget>[
+              new DrawerHeader(
+                padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 50.0),
+                child: new Text(
+                  "Hello User",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    fontSize: 30.0,
+                  ),
+                ),
+                decoration: new BoxDecoration(
+                  color: Colors.blue.shade200,
+                ),
+              ),
+              new ListTile(
+                title: new Text("About"),
+                onTap: () {
+                  _handleAbout(context);
+                },
+                leading: new Icon(Icons.person),
+              )
+            ],
+          ),
+        ),
       ),
       body: new Scrollbar(child: toggle),
       floatingActionButton: new FloatingActionButton(
@@ -70,28 +105,37 @@ class _HomeState extends State<Home> {
         new DateTime.now(),
         result["color"] == null ? Colors.red.value.toString() : result["color"],
       ));
-      var snackbar = new SnackBar(content: new Text("Saved"),duration: new Duration(seconds: 1),);
+      var snackbar = new SnackBar(
+        content: new Text("Saved"),
+        duration: new Duration(seconds: 1),
+      );
+      Scaffold.of(context).showSnackBar(snackbar);
+    } else {
+      var snackbar = new SnackBar(
+        content: new Text("Not Saved"),
+        duration: new Duration(seconds: 1),
+      );
       Scaffold.of(context).showSnackBar(snackbar);
     }
-    else
-      {
-        var snackbar = new SnackBar(content: new Text("Not Saved"),duration: new Duration(seconds: 1),);
-        Scaffold.of(context).showSnackBar(snackbar);
-      }
   }
 
   void _handleToggle() {
     setState(() {
-      if(curr=="s")
-        {
-          curr="l";
-          toggle=new ListViewPage();
-        }
-      else
-        {
-          curr="s";
-          toggle=new StaggeredGridPage();
-        }
+      if (curr == "s") {
+        curr = "l";
+        toggle = new ListViewPage();
+      } else {
+        curr = "s";
+        toggle = new StaggeredGridPage();
+      }
     });
+  }
+
+  void _handleAbout(BuildContext context) async {
+    Navigator.pop(context);
+    await Navigator.push(context,
+        new MaterialPageRoute(builder: (BuildContext context) {
+      return new AboutPage();
+    }));
   }
 }

@@ -113,6 +113,7 @@ class _InputPageState extends State<InputPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: new TextFormField(
                     controller: content,
+                    maxLines: null,
                     decoration: new InputDecoration(
                       labelText: "Enter description",
                       hintText: "The world is a beautiful place",
