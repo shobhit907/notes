@@ -30,14 +30,42 @@ class _InputPageState extends State<InputPage> {
       title.text = n.title;
       content.text = n.content;
       this.n = n;
-      list_of_actions.add(Builder(builder: (BuildContext context) {
-        return new IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {},
-          tooltip: "Delete Note",
-        );
-      }));
     }
+    list_of_actions.add(Builder(builder: (BuildContext context) {
+      return new IconButton(
+        icon: Icon(Icons.save),
+        onPressed: () {
+          Navigator.pop(context, {
+            "title": title.text,
+            "content": content.text,
+            "color": color,
+          });
+        },
+        tooltip: "Save Note",
+      );
+    }));
+    list_of_actions.add(Builder(builder: (BuildContext context) {
+      return new IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          _deleteNote(context, n);
+        },
+        tooltip: "Delete Note",
+      );
+    }));
+    list_of_actions.add(Builder(builder: (BuildContext context) {
+      return new IconButton(
+        icon: Icon(Icons.cancel),
+        onPressed: () {
+          Navigator.pop(context, {
+            "title": null,
+            "content": null,
+            "color": null,
+          });
+        },
+        tooltip: "Save Note",
+      );
+    }));
   }
 
   List<Widget> list_of_actions = <Widget>[];
@@ -51,15 +79,16 @@ class _InputPageState extends State<InputPage> {
         appBar: new AppBar(
           backgroundColor: Colors.blue.shade200,
           title: new ListTile(
-            title: new Text("$pagetitle",style: new TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),),
-            trailing: new IconButton(
-                icon: Icon(Icons.delete,color: Colors.white,),
-                onPressed: () {
-                  _deleteNote(context, n);
-                }),
+            title: new Text(
+              "$pagetitle",
+              style: new TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
 //          centerTitle: true,
-//          actions: list_of_actions,
+          actions: list_of_actions,
         ),
         backgroundColor: Colors.blueGrey.shade400,
         body: new Scrollbar(
@@ -125,8 +154,8 @@ class _InputPageState extends State<InputPage> {
                             title: new Text(
                               "Save",
                               style: new TextStyle(
-                                  color: Colors.white,
-                                  ),
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           color: Colors.black,
@@ -137,9 +166,9 @@ class _InputPageState extends State<InputPage> {
                         child: new RaisedButton(
                           onPressed: () {
                             Navigator.pop(context, {
-                              "title": title.text,
-                              "content": content.text,
-                              "color": color,
+                              "title": null,
+                              "content": null,
+                              "color": null,
                             });
                           },
                           child: new ListTile(

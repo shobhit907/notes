@@ -28,6 +28,9 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Colors.blue.shade200,
       ),
+      drawer: new Drawer(
+        
+      ),
       body: new Scrollbar(child: new StaggeredGridPage()),
       floatingActionButton: new FloatingActionButton(
         foregroundColor: Colors.black,
